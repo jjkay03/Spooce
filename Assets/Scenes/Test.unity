@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -268,7 +268,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 3
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -614,21 +614,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d86c92c797b73a4a9733cb65c39b043, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxFrontSpeed: 8
-  maxSidesSpeed: 3
-  maxBackSpeed: 1
-  rotationSpeed: 180
+  maxFrontSpeed: 4
+  maxSidesSpeed: 1
+  maxBackSpeed: 0.5
+  rotationSpeed: 140
   acceleration: 3
-  deceleration: 5
+  deceleration: 2
+  mainCamera: {fileID: 519420028}
+  cameraSmoothing: 5
   engineMain: {fileID: 0}
   leftMain: {fileID: 0}
   rightMain: {fileID: 0}
   moveFrontKey: 77000000
   moveBackKey: 73000000
-  moveLeftKey: 61000000
-  moveRightKey: 64000000
-  rotateLeftKey: 71000000
-  rotateRightKey: 65000000
+  moveLeftKey: 71000000
+  moveRightKey: 65000000
+  rotateLeftKey: 61000000
+  rotateRightKey: 64000000
 --- !u!4 &2009070690
 Transform:
   m_ObjectHideFlags: 0

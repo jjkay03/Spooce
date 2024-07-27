@@ -12,6 +12,14 @@ public class PlayerControle : MonoBehaviour {
     public float acceleration = 3f;
     public float deceleration = 2f;
 
+    [Header("Camera")]
+    public GameObject mainCamera;
+    public float cameraSmoothing = 5f;
+    public float cameraSizeLowSpeed = 3f;
+    public float cameraSizeMaxSpeed = 5f;
+    public float cameraZoomSpeed = 2f;
+    public float cameraZoomSensitivity = 1f;
+
     [Header("Engines")]
     public GameObject engineMain;
     public GameObject leftMain;
@@ -41,6 +49,7 @@ public class PlayerControle : MonoBehaviour {
         HandleMovement();
         HandleRotation();
         ApplyMovement();
+        HandleCamera();
     }
 
     /* --------------------------------- Classes -------------------------------- */
@@ -84,4 +93,27 @@ public class PlayerControle : MonoBehaviour {
         foreach (KeyCode key in keys) if (Input.GetKey(key)) return true;
         return false;
     }
+
+    // Function to handle camera movements
+    void HandleCamera() {
+        if (mainCamera != null) {
+            // Handle camera position
+            Vector3 targetPosition = transform.position;
+            targetPosition.z = mainCamera.transform.position.z; // Keep the camera's original z-position
+            Vector3 smoothedPosition = Vector3.Lerp(mainCamera.transform.position, targetPosition, cameraSmoothing * Time.deltaTime);
+            mainCamera.transform.position = smoothedPosition;
+
+            // Handle camera zoom
+            float currentSpeed = velocity.magnitude;
+            float maxSpeed = Mathf.Max(maxFrontSpeed, maxSidesSpeed, maxBackSpeed);
+            float speedRatio = Mathf.Clamp01(currentSpeed / (maxSpeed * cameraZoomSensitivity));
+
+            float targetSize = Mathf.Lerp(cameraSizeLowSpeed, cameraSizeMaxSpeed, speedRatio);
+            Camera cam = mainCamera.GetComponent<Camera>();
+            if (cam != null) {
+                cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetSize, cameraZoomSpeed * Time.deltaTime);
+            }
+        }
+    }
+
 }
