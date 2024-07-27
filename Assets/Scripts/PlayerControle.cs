@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 public class PlayerControle : MonoBehaviour {
@@ -14,7 +13,7 @@ public class PlayerControle : MonoBehaviour {
     public float deceleration = 2f;
 
     [Header("Camera")]
-    public GameObject mainCamera;
+    public Camera mainCamera;
     public float cameraSmoothing = 5f;
     public float cameraSizeLowSpeed = 3f;
     public float cameraSizeMaxSpeed = 5f;
@@ -25,8 +24,8 @@ public class PlayerControle : MonoBehaviour {
     public GameObject engineMain;
     public GameObject engineLeft;
     public GameObject engineRight;
-    public float engineFadeInSpeed = 0.5f;
-    public float engineFadeOutSpeed = 4f;
+    public float engineFadeInSpeed = 0.2f;
+    public float engineFadeOutSpeed = 0.6f;
     public float mainEngineMaxOpacity = 0.2f;
     public float sideEngineMaxOpacity = 0.1f;
     private SpriteRenderer mainEngineSprite;
@@ -43,6 +42,7 @@ public class PlayerControle : MonoBehaviour {
 
     private Vector2 velocity;
     private float rotationVelocity;
+
 
     /* ------------------------------ Main Classes ------------------------------ */
     

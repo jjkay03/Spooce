@@ -431,8 +431,8 @@ MonoBehaviour:
   engineMain: {fileID: 3014277468997755209}
   engineLeft: {fileID: 2157148381403506573}
   engineRight: {fileID: 4655215354615046721}
-  engineFadeInSpeed: 0.5
-  engineFadeOutSpeed: 4
+  engineFadeInSpeed: 0.2
+  engineFadeOutSpeed: 0.6
   mainEngineMaxOpacity: 0.2
   sideEngineMaxOpacity: 0.1
   moveFrontKey: 77000000
