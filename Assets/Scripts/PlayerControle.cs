@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerControle : MonoBehaviour {
@@ -22,8 +23,15 @@ public class PlayerControle : MonoBehaviour {
 
     [Header("Engines")]
     public GameObject engineMain;
-    public GameObject leftMain;
-    public GameObject rightMain;
+    public GameObject engineLeft;
+    public GameObject engineRight;
+    public float engineFadeInSpeed = 0.5f;
+    public float engineFadeOutSpeed = 4f;
+    public float mainEngineMaxOpacity = 0.2f;
+    public float sideEngineMaxOpacity = 0.1f;
+    private SpriteRenderer mainEngineSprite;
+    private SpriteRenderer leftEngineSprite;
+    private SpriteRenderer rightEngineSprite;
 
     [Header("Keybinds")]
     public KeyCode[] moveFrontKey = { KeyCode.W };
@@ -42,6 +50,11 @@ public class PlayerControle : MonoBehaviour {
     void Start() {
         velocity = Vector2.zero;
         rotationVelocity = 0f;
+
+        // Get engine sprites
+        mainEngineSprite = engineMain.GetComponent<SpriteRenderer>();
+        leftEngineSprite = engineLeft.GetComponent<SpriteRenderer>();
+        rightEngineSprite = engineRight.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -50,6 +63,7 @@ public class PlayerControle : MonoBehaviour {
         HandleRotation();
         ApplyMovement();
         HandleCamera();
+        HandleEngineSprites();
     }
 
     /* --------------------------------- Classes -------------------------------- */
@@ -88,12 +102,6 @@ public class PlayerControle : MonoBehaviour {
         transform.Rotate(Vector3.forward, rotationVelocity * Time.deltaTime);
     }
 
-    // Fumction to check if a key is being pressed
-    bool IsAnyKeyPressed(KeyCode[] keys) {
-        foreach (KeyCode key in keys) if (Input.GetKey(key)) return true;
-        return false;
-    }
-
     // Function to handle camera movements
     void HandleCamera() {
         if (mainCamera != null) {
@@ -114,6 +122,39 @@ public class PlayerControle : MonoBehaviour {
                 cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetSize, cameraZoomSpeed * Time.deltaTime);
             }
         }
+    }
+
+    // Function to handle engine sprites
+    void HandleEngineSprites() {
+        // Main engine
+        bool isMovingForward = IsAnyKeyPressed(moveFrontKey);
+        FadeSprite(mainEngineSprite, isMovingForward, mainEngineMaxOpacity);
+
+        // Rotating left - right engine
+        bool isRotatingRight = IsAnyKeyPressed(rotateRightKey);
+        FadeSprite(rightEngineSprite, isRotatingRight, sideEngineMaxOpacity);
+
+        // Rotating right - left engine
+        bool isRotatingLeft = IsAnyKeyPressed(rotateLeftKey);
+        FadeSprite(leftEngineSprite, isRotatingLeft, sideEngineMaxOpacity);
+    }
+
+
+    /* ---------------------------- Helper Functions ---------------------------- */
+
+    // Helper function to fade sprites
+    void FadeSprite(SpriteRenderer sprite, bool fadeIn, float maxOpacity) {
+        if (sprite == null) return;
+        Color color = sprite.color;
+        if (fadeIn) color.a = Mathf.MoveTowards(color.a, maxOpacity, engineFadeInSpeed * Time.deltaTime);
+        else color.a = Mathf.MoveTowards(color.a, 0f, engineFadeOutSpeed * Time.deltaTime);
+        sprite.color = color;
+    }
+
+    // Helper fumction to check if a key is being pressed
+    bool IsAnyKeyPressed(KeyCode[] keys) {
+        foreach (KeyCode key in keys) if (Input.GetKey(key)) return true;
+        return false;
     }
 
 }
